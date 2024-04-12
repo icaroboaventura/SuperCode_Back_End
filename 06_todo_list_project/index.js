@@ -27,11 +27,13 @@ app.get("/api/v1/todos/:id", (req, res) => {
 app.post("/api/v1/todos", (req, res) => {
   readTodos()
     .then((todos) => {
-      const lastTodo = todos[todos.length - 1].id;
+      let lastTodo;
+      todos.length === 0 ? (lastTodo = 0) : (lastTodo = todos[todos.length - 1].id);
       const newTodo = {
         id: lastTodo + 1,
         todo_title: req.body.todo_title,
         todo_description: req.body.todo_description,
+        todo_status: req.body.todo_status,
       };
       return [...todos, newTodo];
     })
@@ -41,6 +43,37 @@ app.post("/api/v1/todos", (req, res) => {
       console.log(err);
       res.status(500).json({ err, message: "Could not read all todos" });
     });
+});
+
+app.patch("/api/v1/todos/:id", (req, res) => {
+  const todoIdToUpdate = req.params.id;
+  const updateInfo = req.body; // request body { amount?, description?, type? }
+  readTodos()
+    .then((todos) =>
+      todos.map((currentTodo) => {
+        if (currentTodo.id.toString() === todoIdToUpdate) {
+          // update todo
+          return {
+            ...currentTodo,
+            ...updateInfo,
+          }; // overwrite currentTodo (to be updated) with updateInfo
+        } else {
+          return currentTodo; // leave non-target todos unmodified
+        }
+      })
+    )
+    .then((todos) => writeTodos(todos)) // todos sind hier ALLE aber OHNE der gelöschten transaction
+    .then((todos) => res.status(200).json(todos))
+    .catch((err) => res.status(500).json({ err, message: "Could not remove todo" }));
+});
+
+app.delete("/api/v1/todos/:id", (req, res) => {
+  const todoIdToDelete = req.params.id;
+  readTodos()
+    .then((todos) => todos.filter((t) => t.id.toString() !== todoIdToDelete))
+    .then((todos) => writeTodos(todos)) // todos sind hier ALLE aber OHNE der gelöschten transaction
+    .then((todos) => res.status(200).json(todos))
+    .catch((err) => res.status(500).json({ err, message: "Could not remove transaction" }));
 });
 
 const PORT = 3003;
