@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "todo_title": "Trink Water",
+    "todo_description": "Trink 500ml of water."
+  },
+  {
+    "id": 2,
+    "todo_title": "Call Mom",
+    "todo_description": "Ask mom about satuday."
+  },
+  {
+    "id": 3,
+    "todo_title": "Call Zied",
+    "todo_description": "Ask Zied about Monday."
+  },
+  {
+    "id": 4,
+    "todo_title": "Call Zied",
+    "todo_description": "Ask Zied about Monday."
+  },
+  {
+    "id": 5,
+    "todo_title": "Call Zied",
+    "todo_description": "Ask Zied about Monday."
+  },
+  {
+    "id": 6,
+    "todo_title": "Call Zied",
+    "todo_description": "Ask Zied about Monday."
+  },
+  {
+    "id": 7,
+    "todo_title": "Call Reazy",
+    "todo_description": "Ask Zied about Monday."
+  },
+  {
+    "id": 8,
+    "todo_title": "Call Reazy",
+    "todo_description": "Ask Zied about Monday."
+  }
+]
