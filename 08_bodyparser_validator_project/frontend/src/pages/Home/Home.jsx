@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <>
-      <Add message={message} />
+      <Add setMessage={setMessage} />
       <Show message={message} setMessage={setMessage} />
     </>
   );
