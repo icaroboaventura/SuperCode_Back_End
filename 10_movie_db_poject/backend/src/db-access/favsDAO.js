@@ -17,7 +17,16 @@ const deleteFavorite = (favoriteId) => {
 };
 
 const getFavorites = () => {
-  return getDb().then((db) => db.collection(favCollection).find().toArray());
+  return getDb()
+    .then((db) => db.collection(favCollection).find().toArray())
+    .then((db) => db.map((id) => id.movieID))
+    .then((idsFavoriten) => Promise.all([getDb(), idsFavoriten]))
+    .then(([db, idsFavoriten]) =>
+      db
+        .collection("movieDetails")
+        .find({ _id: { $in: idsFavoriten } })
+        .toArray()
+    );
 };
 
 export const favsDAO = { createFavorite, deleteFavorite, getFavorites };

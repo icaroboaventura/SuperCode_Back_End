@@ -1,10 +1,12 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 import { moviesDAO } from "./db-access/moviesDAO.js";
 import { favsDAO } from "./db-access/favsDAO.js";
 import { ObjectId } from "mongodb";
 
 const app = express();
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
@@ -13,8 +15,9 @@ app.use(express.json());
 // --------------- All movies
 
 app.get("/api/v1/movies", (req, res) => {
+  const page = req.query.page || 1;
   moviesDAO
-    .findAll()
+    .findAll(page)
     .then((movies) => res.json(movies))
     .catch((err) => {
       console.log(err);
@@ -37,9 +40,7 @@ app.get("/api/v1/movies/:moviesId", (req, res) => {
 // --------------- Create movie
 
 app.post("/api/v1/movies", (req, res) => {
-  const newMovie = {
-    title: req.body.title,
-  };
+  const newMovie = req.body;
   moviesDAO
     .createMovie(newMovie)
     .then((newMovie) => res.json(newMovie || {}))
@@ -96,7 +97,6 @@ app.post("/api/v1/movies/:movieID/favorites", (req, res) => {
   const movieID = req.params.movieID;
   const isFav = {
     movieID: ObjectId.createFromHexString(movieID),
-    title: req.body.title,
   };
   favsDAO
     .createFavorite(isFav)
