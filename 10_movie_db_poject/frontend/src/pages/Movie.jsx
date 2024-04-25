@@ -1,7 +1,9 @@
+import Header from "@/components/Header";
+
 const Movie = () => {
   return (
     <>
-      <h1>Movie</h1>
+      <Header />
     </>
   );
 };

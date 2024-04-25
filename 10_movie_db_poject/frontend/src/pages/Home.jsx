@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { backendUrl } from "../api/api";
-
+import { Link } from "react-router-dom";
+import Header from "@/components/Header";
 const Home = () => {
   const [moviesData, setMoviesData] = useState();
   const [page, setPage] = useState(1);
@@ -36,27 +37,27 @@ const Home = () => {
     }
   };
 
-  console.log(moviesData);
-  console.log(page);
-  console.log(lastPage);
-
   return (
     <>
-      <footer>
-        <button disabled={page === 1} onClick={() => changePage("previous")}>
-          Previous
-        </button>
-        <button disabled={lastPage === true} onClick={() => changePage("next")}>
-          Next
-        </button>
-      </footer>
-      <h1>Home</h1>
-      {moviesData?.map((movie, index) => (
-        <div key={index}>
-          <img className=" w-100" src={movie.poster} alt={movie.title} />
-          <p>{movie.title}</p>
+      <Header />
+      <section className="flex flex-wrap gap-9 justify-center p-20">
+        {moviesData?.map((movie, index) => (
+          <Link to={movie._id} key={index} className="flex items-center justify-center flex-col w-40 h-40 text-center">
+            <h2>{movie.title}</h2>
+            <p>{movie.year}</p>
+          </Link>
+        ))}
+      </section>
+      <footer className="pb-20">
+        <div className="flex justify-center gap-10">
+          <button disabled={page === 1} onClick={() => changePage("previous")}>
+            Previous
+          </button>
+          <button disabled={lastPage === true} onClick={() => changePage("next")}>
+            Next
+          </button>
         </div>
-      ))}
+      </footer>
     </>
   );
 };
